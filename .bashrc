@@ -18,6 +18,14 @@ fi
 # Put your fun stuff here.
 # doas Completion
 complete -cf doas
+# In Ordner wechseln nur mit Name des Ordners
+shopt -s autocd
+# Vi-Modus in bash
+set -o vi
+# Alias um mit ls alles in Farbe anzuzeigen
+alias ls='ls --color'
+
+# Alle st Fenster teilen sich eine Historydatei
 shopt -s histappend
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a"
 
