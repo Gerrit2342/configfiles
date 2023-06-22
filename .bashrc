@@ -29,3 +29,4 @@ alias ls='ls --color'
 shopt -s histappend
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a"
 
+[ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc" # aliasrc laden
