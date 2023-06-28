@@ -1,7 +1,7 @@
 "Abschnitt für vim-plug den Plugin-Manager 
 call plug#begin('~/.nvim/plugged')
 "Hier folgen die zu ladenden Plugins
-
+Plug 'maxboisvert/vim-simple-complete'
 Plug 'L3MON4D3/LuaSnip', {'do': 'make install_jsregexp'} "Snippet Manager
 Plug 'lervag/vimtex'
 "Plug 'neoclide/coc.nvim', {'branch': 'release'} "Autocompletion

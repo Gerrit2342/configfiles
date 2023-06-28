@@ -19,7 +19,9 @@ alias \
 	YT="youtube-viewer" \
 	sdn="sudo shutdown -h now" \
 	f="$FILE" \
-	e="$EDITOR" \
+	e="doas $EDITOR" \
 	v="$EDITOR" \
-	p="sudo emerge" \
+	p="doas emerge -av" \
+	da="doas" \
+	tar="tar xpvf" \
   pq="sudo emerge -s"
