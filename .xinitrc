@@ -42,5 +42,7 @@ fi
 # start some nice programs
 #exec xbindkeys &
 slstatus &
+clipmenud &
+keepassxc &
 # Führt einen session-dbus aus (rc startet system-dbus)
 exec dbus-launch --exit-with-session dwm > ~/.config/dwm/dwm.log 
