@@ -1,3 +1,4 @@
+" PLUGINS ---------------------------------------------------------------- {{{
 "Abschnitt für vim-plug den Plugin-Manager 
 call plug#begin('~/.nvim/plugged')
 "Hier folgen die zu ladenden Plugins
@@ -6,20 +7,56 @@ Plug 'L3MON4D3/LuaSnip', {'do': 'make install_jsregexp'} "Snippet Manager
 Plug 'lervag/vimtex'
 "Plug 'neoclide/coc.nvim', {'branch': 'release'} "Autocompletion
 call plug#end()
+" }}}
 
+
+" OPTIONS ---------------------------------------------------------------- {{{
 set number "Zeilennummer anzeigen
 set signcolumn=yes
-
+" }}}
+"Dateityp erkennen
 filetype on
 filetype plugin on
 filetype indent on
 
-" Change Color when entering Insert Mode
-autocmd InsertEnter * highlight CursorLine guifg=white guibg=blue ctermfg=white ctermbg=darkblue
-" Revert Color to default when leaving Insert Mode
-autocmd InsertLeave * highlight default 
-":h highlight
+set cursorline
+set cursorcolumn
+" Do not wrap lines. Allow long lines to extend as far as the line goes.
+set nowrap
 
+" Ignore capital letters during search.
+set ignorecase
+" Override the ignorecase option if searching for capital letters.
+" This will allow you to search specifically for capital letters.
+set smartcase
+
+
+" Show partial command you type in the last line of the screen.
+set showcmd
+
+" Show the mode you are on the last line.
+set showmode
+
+" Set the commands to save in history default number is 20.
+set history=1000
+
+" Enable auto completion menu after pressing TAB.
+set wildmenu
+
+" Make wildmenu behave like similar to Bash completion.
+set wildmode=list:longest
+
+" There are certain files that we would never want to edit with Vim.
+" Wildmenu will ignore files with these extensions.
+set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
+
+
+" Change Color when entering Insert Mode
+"autocmd InsertEnter * highlight CursorLine guifg=white guibg=blue ctermfg=white ctermbg=darkblue
+" Revert Color to default when leaving Insert Mode
+"autocmd InsertLeave * highlight default 
+":h highlight
+"
 inoremap jj <Esc>
 nnoremap WW :w<CR>
 noremap j gj
@@ -53,7 +90,7 @@ luafile  ~/.nvim/LuaSnip/config.lua
 "      \ coc#refresh()
 "inoremap <expr><C-k> coc#pum#visible() ? coc#pum#prev(1) : "\<C-k>"
 "inoremap <expr><C-h> coc#pum#visible() ? coc#pum#confirm() : "\<C-k>"
-
+let maplocalleader = ","
 "Compiler Optionen für Vimtex
  let g:vimtex_compiler_latexmk = {
         \ 'build_dir' : '',
