@@ -1,0 +1,5 @@
+# vim: filetype=neomuttrc
+
+set query_command="abook --mutt-query '%s'"
+macro pager A |'abook --add-email'\n
+#set pipe_decode yes
