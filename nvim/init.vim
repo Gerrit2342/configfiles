@@ -5,20 +5,21 @@ call plug#begin('~/.nvim/plugged')
 Plug 'maxboisvert/vim-simple-complete'
 Plug 'L3MON4D3/LuaSnip', {'do': 'make install_jsregexp'} "Snippet Manager
 Plug 'lervag/vimtex'
+Plug 'overcache/NeoSolarized'
 "Plug 'neoclide/coc.nvim', {'branch': 'release'} "Autocompletion
 call plug#end()
 " }}}
 
-
 " OPTIONS ---------------------------------------------------------------- {{{
 set number "Zeilennummer anzeigen
 set signcolumn=yes
-" }}}
+
 "Dateityp erkennen
 filetype on
 filetype plugin on
 filetype indent on
-
+colorscheme evening
+set termguicolors
 set cursorline
 set cursorcolumn
 " Do not wrap lines. Allow long lines to extend as far as the line goes.
@@ -40,23 +41,19 @@ set showmode
 " Set the commands to save in history default number is 20.
 set history=1000
 
-" Enable auto completion menu after pressing TAB.
-set wildmenu
-
-" Make wildmenu behave like similar to Bash completion.
-set wildmode=list:longest
-
 " There are certain files that we would never want to edit with Vim.
 " Wildmenu will ignore files with these extensions.
 set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 
-
+set foldmethod=marker
 " Change Color when entering Insert Mode
 "autocmd InsertEnter * highlight CursorLine guifg=white guibg=blue ctermfg=white ctermbg=darkblue
 " Revert Color to default when leaving Insert Mode
 "autocmd InsertLeave * highlight default 
 ":h highlight
 "
+" }}}
+" MAPPINGS ---------------------------------------------------------------- {{{
 inoremap jj <Esc>
 nnoremap WW :w<CR>
 noremap j gj
@@ -76,7 +73,7 @@ smap <silent><expr> <Tab> luasnip#jumpable(1) ? '<Plug>luasnip-jump-next' : '<Ta
 imap <silent><expr> <S-Tab> luasnip#jumpable(-1) ? '<Plug>luasnip-jump-prev' : '<S-Tab>'
 smap <silent><expr> <S-Tab> luasnip#jumpable(-1) ? '<Plug>luasnip-jump-prev' : '<S-Tab>'
 
-
+" }}}
 "Angabe des Ordners für das Laden der .lua Dateien
 lua require("luasnip.loaders.from_lua").lazy_load({paths = "~/.nvim/LuaSnip/"})
 "Externe Konfigurationsdatei (lua) einbinden
@@ -90,6 +87,8 @@ luafile  ~/.nvim/LuaSnip/config.lua
 "      \ coc#refresh()
 "inoremap <expr><C-k> coc#pum#visible() ? coc#pum#prev(1) : "\<C-k>"
 "inoremap <expr><C-h> coc#pum#visible() ? coc#pum#confirm() : "\<C-k>"
+
+
 let maplocalleader = ","
 "Compiler Optionen für Vimtex
  let g:vimtex_compiler_latexmk = {
