@@ -12,7 +12,7 @@ local rep = require("luasnip.extras").rep
 return {
 -- Examples of complete snippets using fmt and fmta
 
-s({trig="mfg", snippetType="autosnippet"},
+s({trig="MFG", snippetType="autosnippet"},
   fmta(
 	[[
 	Mit freundlichen Grüßen
@@ -30,7 +30,7 @@ s({trig="VG", snippetType="autosnippet"},
       )
 ),
 
-s({trig="lg", snippetType="autosnippet"},
+s({trig="LG", snippetType="autosnippet"},
   fmta(
 	[[
 	Liebe Grüße
@@ -39,21 +39,50 @@ s({trig="lg", snippetType="autosnippet"},
       )
 ),
 
-s({trig="unisig", snippetType="autosnippet"},
+s({trig="SIG", snippetType="autosnippet"},
   fmta(
 	[[
 	--
-	Gerrit M. Albert
 	Wissenschaftlicher Mitarbeiter
 	Fachstudienberater Technik
-	
+
 	RWTH Aachen
 	Didaktik der Physik und Technik
 	Modulbau Physik 2, Raum 003
 	Otto-Blumenthal-Straße 20
 	52074 Aachen
+
+	Tel: +49 241 80 20272 
 	]],{}
       )
+),
+s({trig="SGF", snippetType="autosnippet"},
+  fmta(
+	[[
+	Sehr geehrte Frau 
+	]],{}
+	)
+),
+s({trig="SGH", snippetType="autosnippet"},
+  fmta(
+	[[
+	Sehr geehrter Herr 
+	]],{}
+	)
+),
+s({trig="LH", snippetType="autosnippet"},
+  fmta(
+	[[
+	Liebe Frau 
+	]],{}
+	)
+),
+s({trig="LH", snippetType="autosnippet"},
+  fmta(
+	[[
+	Lieber Herr  
+	]],{}
+	)
 ),
 s({trig="zb", snippetType="autosnippet"},
   fmta(
