@@ -7,10 +7,11 @@ command -v nvim >/dev/null && alias vim="nvim" vimdiff="nvim -d"
 alias \
 	bat="cat /sys/class/power_supply/BAT?/capacity" \
 	cp="cp -iv" \
+	cl="clear" \
 	mv="mv -iv" \
 	rm="rm -v" \
 	mkd="mkdir -pv" \
-	yt="youtube-dl --add-metadata -i" \
+	yt="yt-dlp --add-metadata -i" \
 	yta="yt -x -f bestaudio/best" \
 	ffmpeg="ffmpeg -hide_banner" \
   	ka="killall" \

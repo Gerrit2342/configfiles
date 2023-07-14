@@ -13,7 +13,8 @@ call plug#end()
 " OPTIONS ---------------------------------------------------------------- {{{
 set number "Zeilennummer anzeigen
 set signcolumn=yes
-
+set wrap " Zeilenumbruch (funktioniert irgendwie nicht)
+set clipboard=unnamedplus " Direkt ins Systemclipboard kopieren (f. LibreOffice etc.)
 "Dateityp erkennen
 filetype on
 filetype plugin on
