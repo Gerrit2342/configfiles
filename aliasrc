@@ -17,7 +17,9 @@ alias \
   	ka="killall" \
 	g="git" \
 	trem="transmission-remote" \
-	YT="youtube-viewer" \
+	YT="pipe-viewer" \
+	LB="lbry-viewer" \
+	m="mpv" \
 	sdn="sudo shutdown -h now" \
 	f="$FILE" \
 	e="doas $EDITOR" \
