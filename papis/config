@@ -1,0 +1,12 @@
+[papers]
+dir = ~/Dokumente/Projekt/papis/Zeitschriftenartikel
+add-folder-name = {doc[author_list][0][family]}-{doc[author_list][1][family]}-{doc[year]}
+add-file-name = {doc[title]}
+
+[settings]
+default-library = papers
+#extra-bibtex-keys = ["tags", "doc_url"]
+bibtex-unicode = True
+
+[books]
+dir = ~/Dokumente/Projekt/papis/Bücher
