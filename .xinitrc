@@ -23,6 +23,7 @@ fi
 slstatus &
 clipmenud &
 keepassxc &
+feh --bg-scale ~/Bilder/back1.webp 
 picom &
 #owncloudcmd -u 6FQ9M2@rwth-aachen.de -p Fmhs1RijHUDCR7o9YOAp ~/Sciebo https://rwth-aachen.sciebo.de &
 # Führt einen session-dbus aus (rc startet system-dbus)
