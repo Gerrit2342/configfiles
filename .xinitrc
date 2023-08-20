@@ -44,5 +44,7 @@ fi
 slstatus &
 clipmenud &
 keepassxc &
+picom &
 # Führt einen session-dbus aus (rc startet system-dbus)
+feh --bg-scale ~/Bilder/back1.webp
 exec dbus-launch --exit-with-session dwm > ~/.config/dwm/dwm.log 
