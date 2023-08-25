@@ -20,10 +20,11 @@ fi
 
 # start some nice programs
 #exec xbindkeys &
-slstatus &
-clipmenud &
-keepassxc &
-feh --bg-scale ~/Bilder/back1.webp 
-picom &
+exec qtile start
+#slstatus &
+#clipmenud &
+#keepassxc &
+#feh --bg-scale ~/Bilder/back1.webp 
+#picom &
 # Führt einen session-dbus aus (rc startet system-dbus)
-exec dbus-launch --exit-with-session dwm > ~/.config/dwm/dwm.log 
+#exec dbus-launch --exit-with-session dwm > ~/.config/dwm/dwm.log 
