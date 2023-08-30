@@ -23,11 +23,15 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import os
+import subprocess
 
-from libqtile import bar, layout, widget
+from libqtile import bar, layout, widget, hook, extension
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
+
+from libqtile.widget import backlight
 
 mod = "mod4"
 terminal = guess_terminal()
@@ -71,6 +75,22 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+
+    Key(['mod4'], 'p', lazy.run_extension(extension.DmenuRun( # Dmenu
+        dmenu_prompt=">",
+        dmenu_font="Andika-8",
+        background="#15181a",
+        foreground="#00ff00",
+        selected_background="#079822",
+        selected_foreground="#fff",
+    ))),
+
+    Key([],"XF86MonBrightnessUp",lazy.widget['backlight'].change_backlight(backlight.ChangeDirection.UP)), # Change Backlight 
+    Key([],"XF86MonBrightnessDown",lazy.widget['backlight'].change_backlight(backlight.ChangeDirection.DOWN)),
+    
+    Key([],"XF86AudioLowerVolume",lazy.widget['volume'].decrease_vol()), # Decrease Volume 
+    Key([],"XF86AudioRaiseVolume",lazy.widget['volume'].increase_vol()), # Increase Volume 
+    Key([],"XF86AudioMute",lazy.widget['volume'].mute()), # Mute Volume
 ]
 
 groups = [Group(i) for i in "123456789"]
@@ -100,31 +120,31 @@ for i in groups:
     )
 
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4),
+    layout.Columns(border_focus_stack = ["#d75f5f", "#8f3d3d"], border_width=4, margin=6),
     layout.Max(),
     # Try more layouts by unleashing below layouts.
-    # layout.Stack(num_stacks=2),
-    # layout.Bsp(),
-    # layout.Matrix(),
-    # layout.MonadTall(),
-    # layout.MonadWide(),
-    # layout.RatioTile(),
-    # layout.Tile(),
-    # layout.TreeTab(),
-    # layout.VerticalTile(),
-    # layout.Zoomy(),
+     layout.Stack(num_stacks=2),
+     layout.Bsp(),
+     layout.Matrix(),
+     layout.MonadTall(),
+     layout.MonadWide(),
+     layout.RatioTile(),
+     layout.Tile(),
+     layout.TreeTab(),
+     layout.VerticalTile(),
+    #layout.Zoomy(),
 ]
 
 widget_defaults = dict(
     font="sans",
-    fontsize=12,
+    fontsize=14,
     padding=3,
 )
 extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        bottom=bar.Bar(
+        top=bar.Bar(
             [
                 widget.CurrentLayout(),
                 widget.GroupBox(),
@@ -136,15 +156,22 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.TextBox("default config", name="default"),
-                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+                # widget.TextBox("default config", name="default"),
+                #widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
                 widget.Systray(),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
+                widget.Volume(),
+                widget.Sep(),
+                widget.Battery(format="'{percent:2.0%} {watt:.2f} W'"),
+                widget.Sep(),
+                widget.Backlight(backlight_name="amdgpu_bl0"),
+                widget.Sep(),
+                widget.Clock(format="%d.%m %a %H:%M %p"),
                 widget.QuickExit(),
             ],
             24,
+            opacity=0.7,
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
@@ -195,3 +222,9 @@ wl_input_rules = None
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
 wmname = "LG3D"
+
+
+@hook.subscribe.startup_once # Autostart pipewire
+def autostart():
+    home = os.path.expanduser('~/.config/qtile/autostart.sh')
+    subprocess.Popen([home])
