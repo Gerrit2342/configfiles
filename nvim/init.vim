@@ -13,7 +13,6 @@ call plug#end()
 " OPTIONS ---------------------------------------------------------------- {{{
 set number "Zeilennummer anzeigen
 set signcolumn=yes
-set wrap " Zeilenumbruch (funktioniert irgendwie nicht)
 set clipboard=unnamedplus " Direkt ins Systemclipboard kopieren (f. LibreOffice etc.)
 "Dateityp erkennen
 filetype on
@@ -23,8 +22,7 @@ colorscheme evening
 set termguicolors
 set cursorline
 set cursorcolumn
-" Do not wrap lines. Allow long lines to extend as far as the line goes.
-set nowrap
+set wrap
 
 " Ignore capital letters during search.
 set ignorecase
