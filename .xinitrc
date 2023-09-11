@@ -21,7 +21,7 @@ fi
 # start some nice programs
 #slstatus &
 clipmenud &
-#keepassxc &
+keepassxc &
 feh --bg-scale ~/Bilder/back2.webp 
 picom &
 # Führt einen session-dbus aus (rc startet system-dbus)

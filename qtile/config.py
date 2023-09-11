@@ -32,10 +32,12 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
 from libqtile.widget import backlight
+from libqtile.dgroups import simple_key_binder
 
 mod = "mod4"
 terminal = guess_terminal()
 
+# KEYS #################################################################
 keys = [
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
@@ -69,6 +71,7 @@ keys = [
         desc="Toggle between split and unsplit sides of stack",
     ),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+    Key([mod, "shift"], "v", lazy.spawn("clipmenu"), desc="Launch clipmenu clipboard manager"),
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
@@ -78,11 +81,11 @@ keys = [
 
     Key(['mod4'], 'p', lazy.run_extension(extension.DmenuRun( # Dmenu
         dmenu_prompt=">",
-        dmenu_font="Andika-8",
-        background="#15181a",
-        foreground="#00ff00",
-        selected_background="#079822",
-        selected_foreground="#fff",
+        #dmenu_font="Andika-8",
+        #background="#15181a",
+        #foreground="#00ff00",
+        #selected_background="#079822",
+        #selected_foreground="#fff",
     ))),
 
     Key([],"XF86MonBrightnessUp",lazy.widget['backlight'].change_backlight(backlight.ChangeDirection.UP)), # Change Backlight 
@@ -93,7 +96,20 @@ keys = [
     Key([],"XF86AudioMute",lazy.widget['volume'].mute()), # Mute Volume
 ]
 
-groups = [Group(i) for i in "123456789"]
+# GROUPS #################################################################
+
+#groups = [Group(i) for i in "123456789"]
+groups = [
+    Group("1",label=""),
+    Group("2",label=""),
+    Group("3"),
+    Group("4"),
+    Group("5",label="", matches=[Match(wm_class=["KeePassXC"])]),
+]
+
+# allow mod3+1 through mod3+0 to bind to groups; if you bind your groups
+# by hand in your config, you don't need to do this.
+#dgroups_key_binder = simple_key_binder(mod)
 
 for i in groups:
     keys.extend(
@@ -109,7 +125,7 @@ for i in groups:
             Key(
                 [mod, "shift"],
                 i.name,
-                lazy.window.togroup(i.name, switch_group=True),
+                lazy.window.togroup(i.name),
                 desc="Switch to & move focused window to group {}".format(i.name),
             ),
             # Or, use below if you prefer not to switch to that group.
@@ -118,6 +134,8 @@ for i in groups:
             #     desc="move focused window to group {}".format(i.name)),
         ]
     )
+
+# LAYOUTS #################################################################
 
 layouts = [
     layout.Columns(border_focus_stack = ["#d75f5f", "#8f3d3d"], border_width=4, margin=6),
@@ -160,6 +178,8 @@ screens = [
                 #widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
+                widget.OpenWeather(app_key="4aa7e600f2bf00a63fbdee515b68cf06", location="Aachen", language="de"),
+                widget.Sep(),
                 widget.Systray(),
                 widget.Volume(),
                 widget.Sep(),
@@ -168,7 +188,6 @@ screens = [
                 widget.Backlight(backlight_name="amdgpu_bl0"),
                 widget.Sep(),
                 widget.Clock(format="%d.%m %a %H:%M %p"),
-                widget.QuickExit(),
             ],
             24,
             opacity=0.7,
