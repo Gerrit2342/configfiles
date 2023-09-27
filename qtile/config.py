@@ -94,6 +94,8 @@ keys = [
     Key([],"XF86AudioLowerVolume",lazy.widget['volume'].decrease_vol()), # Decrease Volume 
     Key([],"XF86AudioRaiseVolume",lazy.widget['volume'].increase_vol()), # Increase Volume 
     Key([],"XF86AudioMute",lazy.widget['volume'].mute()), # Mute Volume
+    
+    Key([mod, "shift"], "End", lazy.spawn("doas /sbin/halt"), desc="Shutdown"),
 ]
 
 # GROUPS #################################################################
@@ -153,49 +155,82 @@ layouts = [
     #layout.Zoomy(),
 ]
 
+
+# WIDGETS & SCREENS #################################################################
+
 widget_defaults = dict(
-    font="sans",
-    fontsize=14,
+    font="Inconsolata",
+    fontsize=16,
     padding=3,
 )
 extension_defaults = widget_defaults.copy()
 
-screens = [
-    Screen(
-        top=bar.Bar(
-            [
-                widget.CurrentLayout(),
-                widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
+def init_widgets_list():
+    widgets_list = [
+        widget.CurrentLayout(),
+        widget.GroupBox(),
+        widget.Prompt(),
+        widget.WindowName(),
+        widget.Chord(
+                chords_colors={"launch": ("#ff0000", "#ffffff"),},
                     name_transform=lambda name: name.upper(),
-                ),
-                # widget.TextBox("default config", name="default"),
-                #widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                # widget.StatusNotifier(),
-                widget.OpenWeather(app_key="4aa7e600f2bf00a63fbdee515b68cf06", location="Aachen", language="de"),
-                widget.Sep(),
-                widget.Systray(),
-                widget.Volume(),
-                widget.Sep(),
-                widget.Battery(format="'{percent:2.0%} {watt:.2f} W'"),
-                widget.Sep(),
-                widget.Backlight(backlight_name="amdgpu_bl0"),
-                widget.Sep(),
-                widget.Clock(format="%d.%m %a %H:%M %p"),
-            ],
-            24,
-            opacity=0.7,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
-    ),
-]
+        # widget.TextBox("default config", name="default"),
+        # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+        # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
+        # widget.StatusNotifier(),
+        widget.OpenWeather(
+            app_key="4aa7e600f2bf00a63fbdee515b68cf06",
+            location="Aachen",
+            language="de",
+            fmt = '  {}'
+            ),
+        widget.Sep(),
+        widget.Systray(),
+        widget.Sep(),
+        widget.Volume(
+            fmt = ' {}',
+            ),
+        widget.Sep(),
+        widget.Battery(
+            format="'{percent:2.0%} {watt:.2f} W'",
+            fmt = ' {}'
+            ),
+        widget.Sep(),
+        widget.Backlight(
+            backlight_name="amdgpu_bl0",
+            fmt = ' {}'
+            ),
+        widget.Sep(),
+        widget.Clock(format="%d.%m %a %H:%M %p"),
+        ]
+    return widgets_list
+
+# Monitor 1 will display ALL widgets in widgets_list. It is important that this
+# is the only monitor that displays all widgets because the systray widget will
+# crash if you try to run multiple instances of it.
+def init_widgets_screen1():
+    widgets_screen1 = init_widgets_list()
+    return widgets_screen1 
+
+# All other monitors' bars will display everything but widgets 22 (systray) and 23 (spacer).
+def init_widgets_screen2():
+    widgets_screen2 = init_widgets_list()
+    del widgets_screen2[6:8]
+    return widgets_screen2
+
+
+def init_screens():
+    return [Screen(top=bar.Bar(widgets=init_widgets_screen1(), size=24, opacity = 0.7)),
+            Screen(top=bar.Bar(widgets=init_widgets_screen2(), size=24, opacity = 0.7))]
+
+if __name__ in ["config", "__main__"]:
+    screens = init_screens()
+    widgets_list = init_widgets_list()
+    widgets_screen1 = init_widgets_screen1()
+    widgets_screen2 = init_widgets_screen2()
+
+# FLOATING #################################################################
 
 # Drag floating layouts.
 mouse = [
@@ -209,16 +244,17 @@ dgroups_app_rules = []  # type: list
 follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
+
 floating_layout = layout.Floating(
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
-        Match(wm_class="confirmreset"),  # gitk
-        Match(wm_class="makebranch"),  # gitk
-        Match(wm_class="maketag"),  # gitk
-        Match(wm_class="ssh-askpass"),  # ssh-askpass
-        Match(title="branchdialog"),  # gitk
-        Match(title="pinentry"),  # GPG key password entry
+        Match(wm_class="confirmreset"),     # gitk
+        Match(wm_class="makebranch"),       # gitk
+        Match(wm_class="maketag"),          # gitk
+        Match(wm_class="ssh-askpass"),      # ssh-askpass
+        Match(title="branchdialog"),        # gitk
+        Match(title="pinentry"),            # GPG key password entry
     ]
 )
 auto_fullscreen = True
